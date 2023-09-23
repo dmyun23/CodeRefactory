@@ -38,26 +38,26 @@ public class Statement {
     }
 
     public int amountFor(Performance perf, Play play){
-        int thisAmount = 0;
+        int result = 0;
 
         switch(play.getType()){
             case TRAGEDY : // 비극
-                thisAmount = 40000;
+                result = 40000;
                 if(perf.getAudience()>30){
-                    thisAmount += 1000 * (perf.getAudience() - 30);
+                    result += 1000 * (perf.getAudience() - 30);
                 }
                 break;
             case CODMEDY : //희극
-                thisAmount = 30000;
+                result = 30000;
                 if(perf.getAudience() > 20){
-                    thisAmount += 10000 + 500 * ( perf.getAudience() -20);
+                    result += 10000 + 500 * ( perf.getAudience() -20);
                 }
-                thisAmount += 300 * perf.getAudience();
+                result += 300 * perf.getAudience();
                 break;
             default:
                 throw new Error("알 수 없는 장르: " + play.getType());
         }
 
-        return thisAmount;
+        return result;
     }
 }
