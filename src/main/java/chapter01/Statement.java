@@ -9,18 +9,15 @@ import java.io.IOException;
 import java.net.URL;
 
 public class Statement {
-    public String statement(Invoice invoice, Plays plays){
-
-        int totalAmount = 0;
+    public String statement(Invoice invoice, Plays plays) throws Exception {
         StringBuilder result = new StringBuilder(String.format("청구내역 (고객명: %s)\n", invoice.getCustomer()));
         for(Performance performance:invoice.getPerformances()){
             //청구 내역을 출력한다.
             result.append(String.format("%s: $%d %d석\n",
                             playFor(plays,performance).getName(),amountFor(performance, plays)/100,performance.getAudience()
                         ));
-            totalAmount += amountFor(performance, plays);;
         }
-        result.append(String.format("총액: $%d\n", totalAmount/100));
+        result.append(String.format("총액: $%d\n", totalAmount(invoice, plays)));
         result.append(String.format("적립 포인트: %d점", totalVolumeCredits(invoice, plays)));
         return result.toString();
     }
@@ -65,5 +62,12 @@ public class Statement {
             result += volumeCreditFor(plays, performance);
         }
         return result;
+    }
+    private int totalAmount(Invoice invoice, Plays plays) throws Exception{
+        int totalAmount = 0;
+        for(Performance performance: invoice.getPerformances()){
+            totalAmount += amountFor(performance,plays);
+        }
+        return totalAmount/100;
     }
 }
