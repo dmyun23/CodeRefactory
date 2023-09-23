@@ -23,12 +23,7 @@ public class Statement {
 
         int volumeCredits = 0;
         for(Performance performance:invoice.getPerformances()){
-            volumeCredits += volumeCreditFor(plays, performance);
-            //청구 내역을 출력한다.
-            result.append(String.format("%s: $%d %d석\n",
-                    playFor(plays,performance).getName(),amountFor(performance, plays)/100,performance.getAudience()
-            ));
-            totalAmount += amountFor(performance, plays);;
+            volumeCredits += volumeCreditFor(plays, performance); 
         }
         result.append(String.format("총액: $%d\n", totalAmount/100));
         result.append(String.format("적립 포인트: %d점", volumeCredits));
