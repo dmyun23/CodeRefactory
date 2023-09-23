@@ -20,10 +20,8 @@ public class Statement {
                         ));
             totalAmount += amountFor(performance, plays);;
         }
-
-        int volumeCredits = totalVolumeCredits(invoice, plays);
         result.append(String.format("총액: $%d\n", totalAmount/100));
-        result.append(String.format("적립 포인트: %d점", volumeCredits));
+        result.append(String.format("적립 포인트: %d점", totalVolumeCredits(invoice, plays)));
         return result.toString();
     }
 
