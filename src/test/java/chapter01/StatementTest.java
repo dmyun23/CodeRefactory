@@ -39,6 +39,4 @@ class StatementTest {
         //then
         assertEquals(answer, result);
     }
-
-
 }

@@ -10,64 +10,32 @@ import java.net.URL;
 
 public class Statement {
     public String statement(Invoice invoice, Plays plays) throws Exception {
-        StringBuilder result = new StringBuilder(String.format("청구내역 (고객명: %s)\n", invoice.getCustomer()));
-        for(Performance performance:invoice.getPerformances()){
+        StatementData statementData = new StatementData(invoice,plays);
+        return renderPlainText(statementData);
+    }
+    private String renderPlainText(StatementData statementData) throws Exception {
+        StringBuilder result = new StringBuilder(String.format("청구내역 (고객명: %s)\n", statementData.getCustomer()));
+        for(Performance performance:statementData.getPerformances()){
             //청구 내역을 출력한다.
             result.append(String.format("%s: $%d %d석\n",
-                            playFor(plays,performance).getName(),amountFor(performance, plays)/100,performance.getAudience()
-                        ));
+                    statementData.playFor(performance).getName(),statementData.amountFor(performance)/100,performance.getAudience()
+            ));
         }
-        result.append(String.format("총액: $%d\n", totalAmount(invoice, plays)));
-        result.append(String.format("적립 포인트: %d점", totalVolumeCredits(invoice, plays)));
+        result.append(String.format("총액: $%d\n", statementData.totalAmount()));
+        result.append(String.format("적립 포인트: %d점", statementData.totalVolumeCredits()));
         return result.toString();
     }
+    private String renderHtml(StatementData statementData) throws Exception {
+        StringBuilder result = new StringBuilder(String.format("<h1> 청구내역 (고객명: %s)\n </h1>", statementData.getCustomer()));
+        result.append("<table> \n");
+        result.append("<tr><th> 연극 </th> <th>좌석 수</th> <th>금액</th>");
+        for (Performance performance : statementData.getPerformances()) {
+            result.append(String.format("<tr><td> %s: </td> <td> $%d </td> <td> %d석 </td></tr>\n",statementData.playFor(performance).getName(), statementData.amountFor(performance) / 100, performance.getAudience()));
+        }
+        result.append("</table>\n");
 
-    private int amountFor(Performance performance, Plays plays){
-        int result = 0;
-        switch(playFor(plays,performance).getType()){
-            case TRAGEDY : // 비극
-                result = 40000;
-                if(performance.getAudience()>30){
-                    result += 1000 * (performance.getAudience() - 30);
-                }
-                break;
-            case CODMEDY : //희극
-                result = 30000;
-                if(performance.getAudience() > 20){
-                    result += 10000 + 500 * ( performance.getAudience() -20);
-                }
-                result += 300 * performance.getAudience();
-                break;
-            default:
-                throw new Error("알 수 없는 장르: " + playFor(plays,performance).getType());
-        }
-        return result;
-    }
-    private Play playFor(Plays plays, Performance Performance) {
-        return plays.get(Performance);
-    }
-    private int volumeCreditFor(Plays plays, Performance performance){
-        int resulte = 0;
-        // 포인트를 적립한다.
-        resulte += Math.max(performance.getAudience() -30, 0);
-        //희극 관객 5명마다 추가 포인트를 제공한다.
-        if( playFor(plays,performance).getType().equals(PlayType.CODMEDY)){
-            resulte += Math.floor(performance.getAudience() /5 );
-        }
-        return resulte;
-    }
-    private int totalVolumeCredits(Invoice invoice, Plays plays){
-        int result = 0;
-        for(Performance performance:invoice.getPerformances()){
-            result += volumeCreditFor(plays, performance);
-        }
-        return result;
-    }
-    private int totalAmount(Invoice invoice, Plays plays) throws Exception{
-        int totalAmount = 0;
-        for(Performance performance: invoice.getPerformances()){
-            totalAmount += amountFor(performance,plays);
-        }
-        return totalAmount/100;
+        result.append(String.format("총액: $%d\n", statementData.totalAmount()));
+        result.append(String.format("적립 포인트: %d점", statementData.totalVolumeCredits()));
+        return result.toString();
     }
 }
