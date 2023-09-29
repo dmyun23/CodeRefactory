@@ -10,7 +10,7 @@ import java.net.URL;
 
 public class Statement {
     public String statement(Invoice invoice, Plays plays) throws Exception {
-        StatementData statementData = new StatementData(invoice,plays);
+        StatementData statementData = new StatementData(invoice,plays,new PerformanceCalculatorFactory());
         return renderPlainText(statementData);
     }
     private String renderPlainText(StatementData statementData) throws Exception {

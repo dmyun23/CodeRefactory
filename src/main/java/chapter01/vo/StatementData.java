@@ -1,16 +1,19 @@
 package chapter01.vo;
 
 import chapter01.PerformanceCalculator;
+import chapter01.PerformanceCalculatorFactory;
 
 import java.util.List;
 
 public class StatementData {
     Invoice invoice;
     Plays plays;
+    PerformanceCalculatorFactory performanceCalculatorFactory;
 
-    public StatementData(Invoice invoice, Plays plays) {
+    public StatementData(Invoice invoice, Plays plays,PerformanceCalculatorFactory performanceCalculatorFactory) {
         this.invoice = invoice;
         this.plays = plays;
+        this.performanceCalculatorFactory = performanceCalculatorFactory;
     }
 
     public String getCustomer(){
@@ -42,12 +45,12 @@ public class StatementData {
     }
 
     private int volumeCreditFor(Performance performance){
-          return new PerformanceCalculator(performance, playFor(performance)).volumeCreditFor();
+          return performanceCalculatorFactory.createPerformanceCalculator(performance, playFor(performance)).volumeCreditFor();
     }
     public Plays getPlays() {
         return plays;
     }
     public int amountFor(Performance performance) throws Exception {
-        return new PerformanceCalculator(performance, playFor(performance)).amountFor();
+        return performanceCalculatorFactory.createPerformanceCalculator(performance, playFor(performance)).amountFor();
     }
 }
