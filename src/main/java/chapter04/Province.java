@@ -19,6 +19,7 @@ public class Province {
     }
     public Province(String name, List<Producer> producers, int demand, int price) {
         this.name = name;
+        this.producers = producers;
         this.demand = demand;
         this.price = price;
         producers.forEach(p-> {
@@ -49,7 +50,7 @@ public class Province {
         int remainDemand  = this.demand;
         int result=0;
         this.producers.sort(Comparator.comparing(p->p.cost));
-        for(Producer p : producers){
+        for(Producer p : this.producers){
             int contribution = Math.min(remainDemand, p.production);
             remainDemand -= contribution;
             result += p.cost * contribution;
