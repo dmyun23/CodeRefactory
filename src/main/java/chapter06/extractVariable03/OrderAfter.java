@@ -1,4 +1,4 @@
-package chapter06.extractVariable;
+package chapter06.extractVariable03;
 
 public class OrderAfter {
 

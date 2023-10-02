@@ -1,4 +1,4 @@
-package chapter06.extractVariable;
+package chapter06.extractVariable03;
 
 import org.junit.jupiter.api.Test;
 
