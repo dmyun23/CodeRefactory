@@ -1,4 +1,4 @@
-package chapter06.introduceParameterObject;
+package chapter06.introduceParameterObject06;
 
 public class NumberRange {
     protected int min;
