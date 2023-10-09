@@ -14,6 +14,4 @@ public class Photo {
         this.location = location;
         this.date = date;
     }
-
-
 }
