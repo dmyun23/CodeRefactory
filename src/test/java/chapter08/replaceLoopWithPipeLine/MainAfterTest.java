@@ -37,5 +37,4 @@ class MainAfterTest {
             i++;
         }
     }
-
 }
